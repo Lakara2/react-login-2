@@ -17,6 +17,7 @@ import {
     where,
     addDoc,
 } from "firebase/firestore";
+
 const firebaseConfig = {
     apiKey: "AIzaSyAJVU14uGCka8Yi4i3BJ8ogpCuynzqLL_A",
     authDomain: "react-lakara-login.firebaseapp.com",
