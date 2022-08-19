@@ -1,31 +1,19 @@
 import React, {useState} from "react";
 import validator from "validator";
 import '../App.css';
-import Social from "./Social";
 import {useNavigate} from "react-router-dom";
-import {logInWithEmailAndPassword, signInWithGoogle} from "../firebase";
+import {auth, logInWithEmailAndPassword, signInWithGoogle} from "../firebase";
 import { getAuth, signInWithPopup, GithubAuthProvider } from "firebase/auth";
-import {SingFacebook} from "../Facebook";
+import {SignInWithFacebook} from "../Facebook";
+import {Simulate} from "react-dom/test-utils";
 
-function SignInWithGithub() {
-    const provider = new GithubAuthProvider();
-    provider.addScope('repo');
-    provider.setCustomParameters({
-        'allow_signup': 'false'
-    });
-
-    const auth = getAuth();
-    signInWithPopup(auth, provider)
-        .then((result) => {
-            const credential = GithubAuthProvider.credentialFromResult(result);
-            const token = credential!.accessToken;
-            const user = result.user;
-        }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GithubAuthProvider.credentialFromError(error);
-    });
+const GitProvider = new GithubAuthProvider();
+const SignInWithGithub = async ()=> {
+    signInWithPopup(auth, GitProvider)
+        .then ((result)=>{
+            GithubAuthProvider.credentialFromResult(result);
+    }).catch((error)=>{
+        GithubAuthProvider.credentialFromError(error); })
 }
 
 const Login =() => {
@@ -91,7 +79,7 @@ const Login =() => {
 
         const navigateValid = (e:any) => {
             let nav = e.target.value
-            if (pw.valueOf()==='password approuver' && emailError.valueOf()=='email est valide'){
+            if (pw.valueOf()==='password approuver' && emailError.valueOf()==='email est valide'){
                 routeChange();
             }else{
                 setnav('email ou password non valide');
@@ -143,19 +131,15 @@ const Login =() => {
                                             <div className="row">
                                                 <div className="col-4">
 
-                                                    <a onClick={
-                                                        signInWithGoogle
-                                                    }
-                                                       onChange={(e)=> navigateValid(e)}
+                                                    <a onClick={signInWithGoogle}
                                                        className=" bg-warning btn d-flex one input100 justify-content-center align-items-center">
                                                         Google
                                                     </a>
 
-
                                                 </div>
 
                                                 <div className="col-4">
-                                                    <a onClick={SingFacebook}
+                                                    <a onClick={SignInWithFacebook}
                                                        className=" text-light btn bg-blue d-flex one input100 justify-content-center align-items-center">
                                                         Facebook
                                                     </a>

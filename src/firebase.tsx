@@ -57,7 +57,6 @@ const logInWithEmailAndPassword = async (email: string , password: any) => {
         await signInWithEmailAndPassword(auth, email, password);
     } catch (err:any) {
         console.error(err);
-        alert(err.message);
     }
 };
 
